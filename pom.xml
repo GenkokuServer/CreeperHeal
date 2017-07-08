@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.nitnelave.CreeperHeal</groupId>
   <artifactId>CreeperHeal</artifactId>
@@ -69,7 +69,8 @@
         <version>1.0-beta-2</version>
         <configuration>
           <checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-          <checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
+          <checkinComment>Publishing javadoc for
+            ${project.artifactId}:${project.version}</checkinComment>
           <content>${project.reporting.outputDirectory}/apidocs</content>
           <skipDeletedFiles>true</skipDeletedFiles>
           <pubScmUrl>scm:git:git@github.com:nitnelave/CreeperHeal.git</pubScmUrl>
@@ -92,12 +93,15 @@
           <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
           <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
           <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
-          <includes><include>**/*</include></includes>
+          <includes>
+            <include>**/*</include>
+          </includes>
           <repositoryName>CreeperHeal</repositoryName>      <!-- github repo name -->
-          <repositoryOwner>nitnelave</repositoryOwner>    <!-- github username  -->
+          <repositoryOwner>nitnelave</repositoryOwner>    <!-- github username -->
         </configuration>
         <executions>
-          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+          <!-- run site-maven-plugin's 'site' target as part of the build's
+            normal 'deploy' phase -->
           <execution>
             <goals>
               <goal>site</goal>
@@ -117,8 +121,8 @@
   </distributionManagement>
   <repositories>
     <repository>
-        <id>spigot-repo</id>
-        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
       <id>sonatype-nexus-releases</id>
@@ -164,19 +168,19 @@
       <scope>system</scope>
       <systemPath>${project.basedir}/lib/Factions.jar</systemPath>
     </dependency>
-    <!--Spigot API-->
+    <!--Spigot API -->
     <dependency>
-        <groupId>org.spigotmc</groupId>
-        <artifactId>spigot-api</artifactId>
-        <version>1.11-R0.1-SNAPSHOT</version>
-        <scope>provided</scope>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.10.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
-    <!--Bukkit API-->
+    <!--Bukkit API -->
     <dependency>
-        <groupId>org.bukkit</groupId>
-        <artifactId>bukkit</artifactId>
-        <version>1.11-R0.1-SNAPSHOT</version>
-        <scope>provided</scope>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.10.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>
