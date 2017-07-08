@@ -20,6 +20,11 @@
       <name>Valentin Tolmer</name>
       <email>valentin.tolmer@gmail.com</email>
     </developer>
+    <developer>
+      <id>GenkokuServer</id>
+      <name>Genkoku Server Developers</name>
+      <url>https://genkoku.city</url>
+    </developer>
   </developers>
   <properties>
     <!--maven variable which points to your local repository -->
@@ -33,12 +38,12 @@
     non-destructive way.
   </description>
   <scm>
-    <connection>scm:git:git@github.com:nitnelave/CreeperHeal.git</connection>
-    <developerConnection>scm:git:git@github.com:nitnelave/CreeperHeal.git</developerConnection>
-    <url>git@github.com:nitnelave/CreeperHeal.git</url>
+    <connection>scm:git:git@github.com:GenkokuServer/CreeperHeal.git</connection>
+    <developerConnection>scm:git:git@github.com:GenkokuServer/CreeperHeal.git</developerConnection>
+    <url>git@github.com:GenkokuServer/CreeperHeal.git</url>
   </scm>
   <packaging>jar</packaging>
-  <url>https://github.com/nitnelave/CreeperHeal</url>
+  <url>https://github.com/GenkokuServer/CreeperHeal</url>
   <build>
     <plugins>
       <plugin>
