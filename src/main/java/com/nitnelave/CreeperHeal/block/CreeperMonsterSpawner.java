@@ -8,26 +8,23 @@ import org.bukkit.block.CreatureSpawner;
  * @author nitnelave
  * 
  */
-class CreeperMonsterSpawner extends CreeperBlock
-{
+class CreeperMonsterSpawner extends CreeperBlock {
 
-    /*
-     * Constructor.
-     */
-    protected CreeperMonsterSpawner(CreatureSpawner blockState)
-    {
-        super(blockState);
-    }
+  /*
+   * Constructor.
+   */
+  protected CreeperMonsterSpawner(CreatureSpawner blockState) {
+    super(blockState);
+  }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.nitnelave.CreeperHeal.block.CreeperBlock#update(boolean)
-     */
-    @Override
-    public void update()
-    {
-        super.update();
-        ((CreatureSpawner) getBlock().getState()).setCreatureTypeByName(((CreatureSpawner) blockState).getCreatureTypeName());
-    }
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.nitnelave.CreeperHeal.block.CreeperBlock#update(boolean)
+   */
+  @Override
+  public void update() {
+    super.update();
+    ((CreatureSpawner) getBlock().getState()).setCreatureTypeByName(((CreatureSpawner) blockState).getCreatureTypeName());
+  }
 }

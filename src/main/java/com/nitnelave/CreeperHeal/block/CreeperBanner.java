@@ -8,32 +8,29 @@ import org.bukkit.block.Banner;
  * @author drexplosionpd
  * 
  */
-public class CreeperBanner extends CreeperBlock
-{
-	
-    /*
-     * Constructor.
-     */
-    protected CreeperBanner(Banner banner)
-    {
-        super(banner);
-    }
+public class CreeperBanner extends CreeperBlock {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.nitnelave.CreeperHeal.block.CreeperBlock#update()
-     */
-    @Override
-    public void update()
-    {
-        super.update();
-        Banner state = (Banner) getBlock().getState();
-        Banner banner = (Banner) blockState;
-        state.setBaseColor(banner.getBaseColor());
-        state.setPatterns(banner.getPatterns());
+  /*
+   * Constructor.
+   */
+  protected CreeperBanner(Banner banner) {
+    super(banner);
+  }
 
-        state.setData(banner.getData());
-        state.update(true);
-    }
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.nitnelave.CreeperHeal.block.CreeperBlock#update()
+   */
+  @Override
+  public void update() {
+    super.update();
+    Banner state = (Banner) getBlock().getState();
+    Banner banner = (Banner) blockState;
+    state.setBaseColor(banner.getBaseColor());
+    state.setPatterns(banner.getPatterns());
+
+    state.setData(banner.getData());
+    state.update(true);
+  }
 }

@@ -20,48 +20,44 @@ import org.bukkit.block.BlockFace;
  * @author nitnelave
  * 
  */
-public class NeighborBlock
-{
-    private final CreeperBlock block;
-    private final BlockFace face;
+public class NeighborBlock {
+  private final CreeperBlock block;
+  private final BlockFace face;
 
-    /**
-     * Constructor.
-     * 
-     * @param block
-     *            The block represented, the one that is possibly dependent.
-     * @param face
-     *            The BlockFace with which it was obtained.
-     */
-    public NeighborBlock(Block block, BlockFace face)
-    {
-        this.block = CreeperBlock.newBlock(block.getState());
-        this.face = face;
-    }
+  /**
+   * Constructor.
+   * 
+   * @param block
+   *          The block represented, the one that is possibly dependent.
+   * @param face
+   *          The BlockFace with which it was obtained.
+   */
+  public NeighborBlock(Block block, BlockFace face) {
+    this.block = CreeperBlock.newBlock(block.getState());
+    this.face = face;
+  }
 
-    /**
-     * Check if the represented block is a dependent block and that it's
-     * dependent face matches the one defined in the constructor.
-     * 
-     * @return Whether this block depends on the block provided in the
-     *         constructor.
-     */
-    public boolean isNeighbor()
-    {
-        if (block instanceof CreeperRail && ((CreeperRail) block).isAscending())
-            return true;
+  /**
+   * Check if the represented block is a dependent block and that it's
+   * dependent face matches the one defined in the constructor.
+   * 
+   * @return Whether this block depends on the block provided in the
+   *         constructor.
+   */
+  public boolean isNeighbor() {
+    if (block instanceof CreeperRail && ((CreeperRail) block).isAscending())
+      return true;
 
-        return block != null && block.getAttachingFace() == face.getOppositeFace();
-    }
+    return block != null && block.getAttachingFace() == face.getOppositeFace();
+  }
 
-    /**
-     * Get the represented block.
-     * 
-     * @return The represented block.
-     */
-    public Block getBlock()
-    {
-        return block.getBlock();
-    }
+  /**
+   * Get the represented block.
+   * 
+   * @return The represented block.
+   */
+  public Block getBlock() {
+    return block.getBlock();
+  }
 
 }
