@@ -336,6 +336,7 @@ public class CreeperBlock implements Replaceable {
       Block rel = block.getRelative(face);
       if (CreeperRail.RAIL_TYPES.contains(rel.getType())) {
         CreeperBlock cb = CreeperBlock.newBlock(rel.getState());
+        if (!(cb instanceof CreeperRail)) continue;
         CreeperRail r = (CreeperRail) cb;
         assert r != null;
         if (r.isAscending())
