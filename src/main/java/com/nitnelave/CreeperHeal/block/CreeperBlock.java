@@ -57,14 +57,21 @@ public class CreeperBlock implements Replaceable
                     Material.DEAD_BUSH, Material.FERN, Material.GRASS, Material.HEAVY_WEIGHTED_PRESSURE_PLATE,
                     Material.LARGE_FERN, Material.LIGHT_WEIGHTED_PRESSURE_PLATE, Material.LILY_PAD, Material.MELON_STEM,
                     Material.NETHER_WART, Material.NETHER_WART_BLOCK, Material.POTATOES, Material.PUMPKIN_STEM,
-                    Material.RED_MUSHROOM, Material.REDSTONE_WIRE, Material.REPEATER, Material.SIGN, Material.SNOW,
-                    Material.STONE_PRESSURE_PLATE, Material.SEAGRASS, Material.SUGAR_CANE, Material.SUGAR_CANE,
+                    Material.RED_MUSHROOM, Material.REDSTONE_WIRE, Material.REPEATER,
+                    Material.ACACIA_SIGN, Material.ACACIA_WALL_SIGN, Material.BIRCH_SIGN, Material.BIRCH_WALL_SIGN,
+                    Material.DARK_OAK_SIGN, Material.DARK_OAK_WALL_SIGN, Material.JUNGLE_SIGN, Material.JUNGLE_WALL_SIGN,
+                    Material.OAK_SIGN, Material.OAK_WALL_SIGN, Material.SPRUCE_SIGN, Material.SPRUCE_WALL_SIGN,
+                    Material.SNOW, Material.STONE_PRESSURE_PLATE, Material.SEAGRASS, Material.SUGAR_CANE, Material.SUGAR_CANE,
                     Material.TALL_GRASS, Material.TALL_SEAGRASS, Material.TRIPWIRE, Material.WHEAT);
     /*
      * These blocks are dependent on another block
      */
     private static final Set<Material> DEPENDENT_BLOCKS =
-            CreeperUtils.createFinalHashSet(Material.TORCH, Material.LADDER, Material.WALL_SIGN, Material.LEVER,
+            CreeperUtils.createFinalHashSet(Material.TORCH, Material.LADDER, 
+                    Material.ACACIA_SIGN, Material.ACACIA_WALL_SIGN, Material.BIRCH_SIGN, Material.BIRCH_WALL_SIGN,
+                    Material.DARK_OAK_SIGN, Material.DARK_OAK_WALL_SIGN, Material.JUNGLE_SIGN, Material.JUNGLE_WALL_SIGN,
+                    Material.OAK_SIGN, Material.OAK_WALL_SIGN, Material.SPRUCE_SIGN, Material.SPRUCE_WALL_SIGN,
+                    Material.LEVER,
                     Material.REDSTONE_TORCH, Material.VINE, Material.COCOA, Material.TRIPWIRE_HOOK);
 
     public static final BlockFace[] CARDINALS = { BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST,
