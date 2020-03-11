@@ -8,9 +8,9 @@ import java.util.HashSet;
 class MaterialListValue extends ConfigValue<HashSet<Material>>
 {
 
+    @SuppressWarnings("unchecked")
     MaterialListValue(CfgValEnumMember v, YamlConfiguration file)
     {
-        //noinspection unchecked
         super((HashSet<Material>) v.getDefaultValue(), file, v.getKey());
     }
 

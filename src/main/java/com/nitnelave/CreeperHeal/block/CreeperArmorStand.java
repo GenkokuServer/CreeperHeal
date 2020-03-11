@@ -122,7 +122,7 @@ public class CreeperArmorStand implements Replaceable
         {
             wasRemoved = true;
             stand.getEquipment().clear();
-            CreeperLog.debug("Removing armor, chestplate = " + stand.getChestplate().getType());
+            CreeperLog.debug("Removing armor, chestplate = " + stand.getEquipment().getChestplate().getType());
             stand.remove();
         }
     }
