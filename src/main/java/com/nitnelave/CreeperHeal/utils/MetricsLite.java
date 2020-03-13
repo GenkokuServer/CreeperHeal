@@ -49,12 +49,13 @@ import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("unused")
 public class MetricsLite {
 
     /**
@@ -146,6 +147,7 @@ public class MetricsLite {
      *
      * @return True if statistics measuring is running, otherwise false.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public boolean start() {
         synchronized (optOutLock) {
             // Did we opt out?
@@ -204,12 +206,7 @@ public class MetricsLite {
             try {
                 // Reload the metrics file
                 configuration.load(getConfigFile());
-            } catch (IOException ex) {
-                if (debug) {
-                    Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
-                }
-                return true;
-            } catch (InvalidConfigurationException ex) {
+            } catch (IOException | InvalidConfigurationException ex) {
                 if (debug) {
                     Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
                 }
@@ -222,7 +219,7 @@ public class MetricsLite {
     /**
      * Enables metrics for the server by setting "opt-out" to false in the config file and starting the metrics task.
      *
-     * @throws java.io.IOException
+     * @throws java.io.IOException - if failed to save the configuration
      */
     public void enable() throws IOException {
         // This has to be synchronized or it can collide with the check in the task.
@@ -243,7 +240,7 @@ public class MetricsLite {
     /**
      * Disables metrics for the server by setting "opt-out" to true in the config file and canceling the metrics task.
      *
-     * @throws java.io.IOException
+     * @throws java.io.IOException - if failed to save the configuration
      */
     public void disable() throws IOException {
         // This has to be synchronized or it can collide with the check in the task.
@@ -411,8 +408,8 @@ public class MetricsLite {
     /**
      * GZip compress a string of bytes
      *
-     * @param input
-     * @return
+     * @param input input data
+     * @return gzipped string data
      */
     public static byte[] gzip(String input) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -420,7 +417,7 @@ public class MetricsLite {
 
         try {
             gzos = new GZIPOutputStream(baos);
-            gzos.write(input.getBytes("UTF-8"));
+            gzos.write(input.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -450,12 +447,11 @@ public class MetricsLite {
     /**
      * Appends a json encoded key/value pair to the given string builder.
      *
-     * @param json
-     * @param key
-     * @param value
-     * @throws UnsupportedEncodingException
+     * @param json JSON output
+     * @param key key of the pair
+     * @param value value of the pair
      */
-    private static void appendJSONPair(StringBuilder json, String key, String value) throws UnsupportedEncodingException {
+    private static void appendJSONPair(StringBuilder json, String key, String value) {
         boolean isValueNumeric = false;
 
         try {
@@ -463,9 +459,7 @@ public class MetricsLite {
                 Double.parseDouble(value);
                 isValueNumeric = true;
             }
-        } catch (NumberFormatException e) {
-            isValueNumeric = false;
-        }
+        } catch (NumberFormatException ignored) {}
 
         if (json.charAt(json.length() - 1) != '{') {
             json.append(',');
@@ -484,8 +478,8 @@ public class MetricsLite {
     /**
      * Escape a string to create a valid JSON string
      *
-     * @param text
-     * @return
+     * @param text plaintext
+     * @return escaped string for JSON format
      */
     private static String escapeJSON(String text) {
         StringBuilder builder = new StringBuilder();
@@ -515,7 +509,7 @@ public class MetricsLite {
                 default:
                     if (chr < ' ') {
                         String t = "000" + Integer.toHexString(chr);
-                        builder.append("\\u" + t.substring(t.length() - 4));
+                        builder.append("\\u").append(t.substring(t.length() - 4));
                     } else {
                         builder.append(chr);
                     }
