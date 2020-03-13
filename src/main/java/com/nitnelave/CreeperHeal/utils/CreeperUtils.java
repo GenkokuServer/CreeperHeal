@@ -1,5 +1,6 @@
 package com.nitnelave.CreeperHeal.utils;
 
+import com.google.common.collect.ImmutableSet;
 import com.nitnelave.CreeperHeal.CreeperHeal;
 import com.nitnelave.CreeperHeal.block.DelayReplacement;
 import com.nitnelave.CreeperHeal.block.Replaceable;
@@ -11,8 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,8 +20,12 @@ import java.util.Set;
  * @author nitnelave
  * 
  */
-public abstract class CreeperUtils
+public final class CreeperUtils
 {
+
+    private CreeperUtils()
+    {
+    }
 
     public static CHExplosionRecordEvent.ExplosionReason getReason(Entity e)
     {
@@ -59,8 +62,10 @@ public abstract class CreeperUtils
      */
     public static <T> T[] concat(T[] first, T[] second)
     {
-        T[] result = Arrays.copyOf(first, first.length + second.length);
-        System.arraycopy(second, 0, result, first.length, second.length);
+        final int firstLength = first.length;
+        final int secondLength = second.length;
+        T[] result = Arrays.copyOf(first, firstLength + secondLength);
+        System.arraycopy(second, 0, result, firstLength, secondLength);
         return result;
     }
 
@@ -76,11 +81,7 @@ public abstract class CreeperUtils
     @SafeVarargs
     public static <T> Set<T> createFinalHashSet(T... elements)
     {
-        Set<T> set = new HashSet<>(elements.length);
-
-        Collections.addAll(set, elements);
-
-        return Collections.unmodifiableSet(set);
+        return ImmutableSet.copyOf(elements);
     }
 
     /**

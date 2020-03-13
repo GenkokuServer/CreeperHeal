@@ -32,7 +32,7 @@ public class CreeperArmorStand implements Replaceable
 
         this.contents = new ItemStack[equipment.getArmorContents().length];
         System.arraycopy(equipment.getArmorContents(), 0, contents, 0, contents.length);
-        CreeperLog.debug("Armor: " + Arrays.toString(contents));
+        CreeperLog.LOGGER.fine("Armor: " + Arrays.toString(contents));
         remove();
     }
 
@@ -122,7 +122,7 @@ public class CreeperArmorStand implements Replaceable
         {
             wasRemoved = true;
             stand.getEquipment().clear();
-            CreeperLog.debug("Removing armor, chestplate = " + stand.getEquipment().getChestplate().getType());
+            CreeperLog.LOGGER.fine("Removing armor, chestplate = " + stand.getEquipment().getChestplate().getType());
             stand.remove();
         }
     }

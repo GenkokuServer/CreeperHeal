@@ -30,30 +30,6 @@ public class CreeperCommandManager implements CommandExecutor
     private final static String GREEN = ChatColor.GREEN.toString(),
                     PURPLE = ChatColor.DARK_PURPLE.toString();
 
-    /**
-     * Register commands.
-     */
-    public static void registerCommands()
-    {
-        CommandMap commandMap = null;
-        try
-        {
-            Field field = Bukkit.getServer().getPluginManager().getClass().getDeclaredField("commandMap");
-            field.setAccessible(true);
-            commandMap = (CommandMap) (field.get(Bukkit.getServer().getPluginManager()));
-        } catch (NoSuchFieldException | IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
-
-        String[] aliases = { "CreeperHeal", CreeperConfig.getAlias() };
-        CreeperCommand com = new CreeperCommand(aliases, "", "", new CreeperCommandManager());
-
-        if (commandMap != null)
-            commandMap.register("_", com);
-
-    }
-
     /*
      * (non-Javadoc)
      * 

@@ -24,8 +24,12 @@ import java.util.logging.Logger;
  * @author nitnelave
  * 
  */
-public abstract class CreeperConfig
+public final class CreeperConfig
 {
+
+    private CreeperConfig()
+    {
+    }
 
     private static final int CONFIG_VERSION = 12;
     private static final File CONFIG_FILE = new File(CreeperHeal.getCHFolder() + "/config.yml"),
@@ -68,13 +72,13 @@ public abstract class CreeperConfig
                 loadSound();
             }
             else
-                CreeperLog.warning("Unknown config value : " + v.toString());
+                CreeperLog.LOGGER.warning("Unknown config value : " + v.toString());
 
     }
 
     private static void loadSound()
     {
-        CreeperLog.debug("Loading sound");
+        CreeperLog.LOGGER.fine("Loading sound");
         try
         {
             sound = Sound.valueOf(soundName.getValue());
@@ -174,7 +178,7 @@ public abstract class CreeperConfig
             e1.printStackTrace();
         } catch (InvalidConfigurationException e1)
         {
-            CreeperLog.warning("Invalid configuration : " + f.getName()
+            CreeperLog.LOGGER.warning("Invalid configuration : " + f.getName()
                                + " is not a valid YAML file.");
         }
     }
@@ -247,8 +251,8 @@ public abstract class CreeperConfig
             }
         } catch (Exception e)
         {
-            CreeperLog.severe("[CreeperHeal] Could not load world configurations");
-            CreeperLog.severe(e.getMessage());
+            CreeperLog.LOGGER.severe("[CreeperHeal] Could not load world configurations");
+            CreeperLog.LOGGER.severe(e.getMessage());
         }
     }
 

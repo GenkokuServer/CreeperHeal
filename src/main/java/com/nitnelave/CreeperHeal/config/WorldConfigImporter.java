@@ -10,8 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
-abstract class WorldConfigImporter
+final class WorldConfigImporter
 {
+
+    private WorldConfigImporter()
+    {
+    }
 
     private final static String[] STRING_BOOLEAN_OPTIONS = { "true", "false", "time" };
     private static boolean enderman, replaceAbove, blockLava, blockTNT, blockIgnite,
@@ -128,7 +132,7 @@ abstract class WorldConfigImporter
     static WorldConfig importFrom(String name, int version)
     {
         WorldConfig w = new WorldConfig(name);
-        CreeperLog.logInfo("Importing settings for world : " + name, 1);
+        CreeperLog.LOGGER.fine("Importing settings for world : " + name);
         switch (version)
         {
         case 5:
@@ -137,7 +141,7 @@ abstract class WorldConfigImporter
             from6(name);
             break;
         default:
-            CreeperLog.warning("Trying to import a world from an unknown (too old?) version.");
+            CreeperLog.LOGGER.warning("Trying to import a world from an unknown (too old?) version.");
         }
         storeSettings(w);
         File f = new File(CreeperHeal.getCHFolder() + "/" + name + ".yml");
@@ -175,9 +179,9 @@ abstract class WorldConfigImporter
             result = configFile.getString(path, defaultValue).trim().toLowerCase();
         } catch (Exception e)
         {
-            CreeperLog.warning("[CreeperHeal] Wrong value for " + path + " field. Defaulting to "
+            CreeperLog.LOGGER.warning("[CreeperHeal] Wrong value for " + path + " field. Defaulting to "
                                + defaultValue + ".");
-            CreeperLog.warning(e.getLocalizedMessage());
+            CreeperLog.LOGGER.warning(e.getLocalizedMessage());
             result = defaultValue;
         }
 
@@ -187,7 +191,7 @@ abstract class WorldConfigImporter
 
         if (!correct)
         {
-            CreeperLog.warning("[CreeperHeal] Wrong value for " + path + " field. Defaulting to "
+            CreeperLog.LOGGER.warning("[CreeperHeal] Wrong value for " + path + " field. Defaulting to "
                                + defaultValue + ".");
             return !defaultValue.equalsIgnoreCase("false");
         }

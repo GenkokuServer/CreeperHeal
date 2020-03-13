@@ -1,42 +1,35 @@
 package com.nitnelave.CreeperHeal.utils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-
 import com.nitnelave.CreeperHeal.CreeperHeal;
 import com.nitnelave.CreeperHeal.config.CfgVal;
 import com.nitnelave.CreeperHeal.config.CreeperConfig;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.logging.*;
 
 /**
  * This class is used for all the outputting to the console and to players.
- * 
+ *
  * @author nitnelave
- * 
+ *
  */
-public abstract class CreeperLog
+public final class CreeperLog
 {
-    /*
-     * Log file, for outputting warnings to a file.
-     */
-    private static final File logFile;
+    private final static Path LOG_DIRECTORY;
+
     /*
      * Logger, for outputting to the console.
      */
-    private final static Logger log = Logger.getLogger("Minecraft");
-    /*
-     * The verbosity level. Initialized at -42 as an arbitrary value, to detect
-     * that it hasn't been loaded from the config yet.
-     */
-    private static int logLevel = -42;
+    public final static Logger LOGGER = CreeperHeal.getInstance().getLogger();
+
     /*
      * Whether to output debug messages.
      */
@@ -44,127 +37,54 @@ public abstract class CreeperLog
 
     static
     {
-        File warningLogFile = new File(CreeperHeal.getCHFolder() + "/log.txt");
-        if (!warningLogFile.exists())
-            FileUtils.createNewFile(warningLogFile);
-
-        logFile = warningLogFile;
+        LOG_DIRECTORY = CreeperHeal.getCHFolder().toPath().resolve("logs");
+        try {
+            if (Files.notExists(LOG_DIRECTORY)) {
+                try {
+                    Files.createDirectories(LOG_DIRECTORY);
+                } catch (FileAlreadyExistsException ignored) {
+                }
+            }
+            Path logFile =
+                LOG_DIRECTORY.resolve(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now()) + "-%g.log");
+            FileHandler handler = new FileHandler(logFile.toAbsolutePath().toString(), true);
+            handler.setFormatter(new SimpleFormatter());
+            LOGGER.addHandler(handler);
+        } catch (IOException exception) {
+            LOGGER.log(Level.SEVERE, "Couldn't register the FileHandler", exception);
+        }
         debug = CreeperConfig.getBool(CfgVal.DEBUG);
     }
 
     /**
-     * Write a message to the log file, prepended by the date.
-     * 
-     * @param message
-     *            The message to be recorded.
-     */
-    public static void record(String message)
-    {
-        try
-        {
-            FileWriter fstream = new FileWriter(logFile, true);
-            BufferedWriter out = new BufferedWriter(fstream);
-            out.write(getDate() + message);
-            out.newLine();
-            out.close();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Output a warning to the console and to the log file.
-     * 
-     * @param message
-     *            The message to be output.
-     */
-    public static void warning(String message)
-    {
-        log.warning("[CreeperHeal] " + message);
-        record("[WARNING] " + message);
-    }
-
-    /**
-     * Display an information message to the console, if the verbosity is high
-     * enough, i.e. if level is lower or equals to the log level.
-     * 
-     * @param msg
-     *            The message to be logged.
-     * @param level
-     *            The corresponding verbosity of the message.
-     */
-    public static void logInfo(String msg, int level)
-    {
-        if (logLevel == -42)
-            logLevel = CreeperConfig.getInt(CfgVal.LOG_LEVEL);
-        if (level <= logLevel)
-        {
-            log.info("[CreeperHeal] " + msg);
-            record("[INFO] " + msg);
-        }
-    }
-
-    /**
-     * Output a SEVERE message to the console and record it.
-     * 
-     * @param message
-     *            The message to be output.
-     */
-    public static void severe(String message)
-    {
-        log.log(Level.SEVERE, "[CreeperHeal] " + message);
-        record("[SEVERE]" + message);
-    }
-
-    /**
-     * Get a simple time formated date.
-     * 
-     * @return a time with the HH:mm:ss format
-     */
-    private static String getDate()
-    {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss ");
-        return dateFormat.format(new Date());
-    }
-
-    /**
-     * Output a debug message, if the debug setting is true.
-     * 
-     * @param message
-     *            The message to output.
-     */
-    public static void debug(String message)
-    {
-        if (debug)
-            log.info("[DEBUG] " + message);
-    }
-
-    /**
-     * Display the type and the location of a block in a formatted way. If force
+     * Display the type and the location of a block in a formatted way. If warning
      * is true, then it is a warning (as part of a warning message). Otherwise
      * it is a debug message.
-     * 
+     *
      * @param block
      *            The block whose information is displayed.
-     * @param force
+     * @param warn
      *            Whether it is a warning or a debug message.
      */
-    public static void displayBlockLocation(Block block, boolean force)
+    public static void displayBlockLocation(Block block, boolean warn)
     {
-        Location loc = block.getLocation();
-        String s = block.getType() + " at " + loc.getBlockX() + "; " + loc.getBlockY() + "; "
-                   + loc.getBlockZ();
-        if (force)
-            warning(s);
+        final Location location = block.getLocation();
+        final String message = block.getType() + " at "
+            + location.getBlockX() + "; " + location.getBlockY() + "; " + location.getBlockZ();
+        if (warn)
+            LOGGER.warning(message);
         else
-            debug(s);
+            LOGGER.fine(message);
     }
 
     public static void setDebug(boolean bool)
     {
         debug = bool;
-        log.info("debug: " + debug);
+        LOGGER.info("Debug mode: " + debug);
+    }
+
+    private CreeperLog()
+    {
     }
 
 }

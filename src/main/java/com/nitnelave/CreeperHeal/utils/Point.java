@@ -11,7 +11,8 @@ public class Point
     /**
      * The coordinates.
      */
-    public int x, y;
+    public int x;
+    public int y;
 
     /**
      * Simple constructor.

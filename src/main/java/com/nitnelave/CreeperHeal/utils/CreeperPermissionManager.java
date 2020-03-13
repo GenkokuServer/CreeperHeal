@@ -8,8 +8,13 @@ import org.bukkit.entity.Player;
  * @author nitnelave
  * 
  */
-public class CreeperPermissionManager
+public final class CreeperPermissionManager
 {
+
+    private CreeperPermissionManager()
+    {
+    }
+
     /**
      * Check if a player has certain permissions.
      * 

@@ -17,8 +17,12 @@ import java.util.List;
  * @author nitnelave
  *
  */
-public abstract class Suffocating
+public final class Suffocating
 {
+
+    private Suffocating()
+    {
+    }
 
     /**
      * Check the living entities around the location. If any is suffocating,

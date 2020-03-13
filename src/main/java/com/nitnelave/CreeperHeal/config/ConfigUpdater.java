@@ -11,7 +11,7 @@ import java.io.IOException;
 class ConfigUpdater
 {
 
-    private static int waitBeforeHeal, logLevel = -42, blockPerBlockInterval, waitBeforeHealBurnt,
+    private static int waitBeforeHeal, blockPerBlockInterval, waitBeforeHealBurnt,
                     dropChance, distanceNear, obsidianChance, obsidianRadius,
                     waitBeforeBurnAgain;
     private static boolean blockPerBlock, teleportOnSuffocate, dropDestroyedBlocks,
@@ -38,7 +38,6 @@ class ConfigUpdater
         CreeperConfig.setBool(CfgVal.EXPLODE_OBSIDIAN, explodeObsidian);
         CreeperConfig.setBool(CfgVal.DEBUG, debug);
         CreeperConfig.setInt(CfgVal.WAIT_BEFORE_HEAL, waitBeforeHeal);
-        CreeperConfig.setInt(CfgVal.LOG_LEVEL, logLevel);
         CreeperConfig.setInt(CfgVal.BLOCK_PER_BLOCK_INTERVAL, blockPerBlockInterval);
         CreeperConfig.setInt(CfgVal.WAIT_BEFORE_HEAL_BURNT, waitBeforeHealBurnt);
         CreeperConfig.setInt(CfgVal.DROP_CHANCE, dropChance);
@@ -52,7 +51,7 @@ class ConfigUpdater
     private static void from4() throws IOException,
                                InvalidConfigurationException
     {
-        CreeperLog.logInfo("Importing config from version 4", 1);
+        CreeperLog.LOGGER.info("Importing config from version 4");
         YamlConfiguration config = new YamlConfiguration();
         File configFile = new File(CreeperHeal.getCHFolder() + "/config.yml");
         config.load(configFile);
@@ -62,15 +61,14 @@ class ConfigUpdater
             tmp_str = config.getString("replacement-method", "block-per-block").trim();
         } catch (Exception e)
         {
-            CreeperLog.warning("[CreeperHeal] Wrong value for replacement method field. Defaulting to block-per-block.");
-            CreeperLog.warning(e.getMessage());
+            CreeperLog.LOGGER.warning("[CreeperHeal] Wrong value for replacement method field. Defaulting to block-per-block.");
+            CreeperLog.LOGGER.warning(e.getMessage());
             tmp_str = "block-per-block";
         }
         if (!tmp_str.equalsIgnoreCase("all-at-once")
             && !tmp_str.equalsIgnoreCase("block-per-block"))
-            CreeperLog.warning("[CreeperHeal] Wrong value for replacement method field. Defaulting to block-per-block.");
+            CreeperLog.LOGGER.warning("[CreeperHeal] Wrong value for replacement method field. Defaulting to block-per-block.");
         waitBeforeHeal = config.getInt("wait-before-heal-explosions", 60);
-        logLevel = config.getInt("verbose-level", 1);
         blockPerBlock = !tmp_str.equalsIgnoreCase("all-at-once");
         teleportOnSuffocate = config.getBoolean("teleport-when-buried", true);
         waitBeforeHealBurnt = config.getInt("wait-before-heal-fire", 45);
@@ -94,14 +92,14 @@ class ConfigUpdater
             tmp_str = config.getString("chest-protection", "no").trim().toLowerCase();
         } catch (Exception e)
         {
-            CreeperLog.warning("[CreeperHeal] Wrong value for chest protection field. Defaulting to no.");
-            CreeperLog.warning(e.getMessage());
+            CreeperLog.LOGGER.warning("[CreeperHeal] Wrong value for chest protection field. Defaulting to no.");
+            CreeperLog.LOGGER.warning(e.getMessage());
             tmp_str = "no";
         }
 
         if (!tmp_str.equalsIgnoreCase("no") && !tmp_str.equalsIgnoreCase("lwc")
             && !tmp_str.equalsIgnoreCase("all"))
-            CreeperLog.warning("[CreeperHeal] Wrong value for chest protection field. Defaulting to no.");
+            CreeperLog.LOGGER.warning("[CreeperHeal] Wrong value for chest protection field. Defaulting to no.");
         else if (tmp_str.equals("all") || tmp_str.equals("lwc"))
             replaceProtectedChests = true;
 
@@ -112,7 +110,7 @@ class ConfigUpdater
     private static void from5() throws IOException,
                                InvalidConfigurationException
     {
-        CreeperLog.logInfo("Importing config from version 5", 1);
+        CreeperLog.LOGGER.info("Importing config from version 5");
 
         YamlConfiguration config = new YamlConfiguration();
         File configFile = new File(CreeperHeal.getCHFolder() + "/config.yml");
@@ -127,7 +125,6 @@ class ConfigUpdater
         boolean replaceAllChests = config.getBoolean("replacement.ignore-chests.all", false);
         replaceProtectedChests = replaceAllChests
                                  || config.getBoolean("replacement.ignore-chests.protected", false);
-        logLevel = config.getInt("advanced.verbose-level", 1);
         teleportOnSuffocate = config.getBoolean("advanced.teleport-when-buried", true);
         dropDestroyedBlocks = config.getBoolean("advanced.drop-destroyed-blocks.enabled", true);
         dropChance = config.getInt("advanced.drop-destroyed-blocks.chance", 100);
@@ -152,7 +149,7 @@ class ConfigUpdater
     private static void from6() throws IOException,
                                InvalidConfigurationException
     {
-        CreeperLog.logInfo("Importing config from version 6", 1);
+        CreeperLog.LOGGER.info("Importing config from version 6");
         YamlConfiguration config = new YamlConfiguration();
         File configFile = new File(CreeperHeal.getCHFolder() + "/config.yml");
         config.load(configFile);
@@ -169,7 +166,6 @@ class ConfigUpdater
         replaceProtectedChests = replaceAllChests
                                  || config.getBoolean("ignore-chests.protected", false);
 
-        logLevel = advanced.getInt("verbose-level", 1);
         teleportOnSuffocate = advanced.getBoolean("teleport-when-buried", true);
         dropDestroyedBlocks = advanced.getBoolean("drop-destroyed-blocks.enabled", true);
         dropChance = advanced.getInt("drop-destroyed-blocks.chance", 100);
@@ -207,7 +203,7 @@ class ConfigUpdater
                 from6();
                 break;
             default:
-                CreeperLog.warning("Trying to import from an unknown config version.");
+                CreeperLog.LOGGER.warning("Trying to import from an unknown config version.");
 
             }
         } catch (Exception e)
