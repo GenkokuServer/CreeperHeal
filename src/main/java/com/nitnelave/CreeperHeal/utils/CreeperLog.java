@@ -35,10 +35,8 @@ public final class CreeperLog
     {
         File folder = CreeperHeal.getCHFolder();
         try {
-            if (folder.mkdirs())
+            if (folder.exists())
                 LOGGER.addHandler(new FileHandler(folder + "/%u.log", true));
-            else
-                LOGGER.severe("Couldn't create the data directories");
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "Couldn't register the FileHandler", exception);
         }
