@@ -6,8 +6,10 @@ import com.nitnelave.CreeperHeal.config.CreeperConfig;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -21,6 +23,8 @@ import java.util.logging.*;
  */
 public final class CreeperLog
 {
+    private final static Path LOG_DIRECTORY;
+
     /*
      * Logger, for outputting to the console.
      */
@@ -33,16 +37,24 @@ public final class CreeperLog
 
     static
     {
-        File folder = CreeperHeal.getCHFolder();
+        LOG_DIRECTORY = CreeperHeal.getCHFolder().toPath().resolve("logs");
         try {
-            if (folder.exists()) {
-                FileHandler handler = new FileHandler(folder + "/logs/" +
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now())
-                    + "-%g.log", true);
-                handler.setFormatter(Arrays.stream(LOGGER.getHandlers()).findFirst()
-                    .map(Handler::getFormatter).orElseGet(SimpleFormatter::new));
-                LOGGER.addHandler(handler);
+            if (Files.notExists(LOG_DIRECTORY)) {
+                try {
+                    Files.createDirectories(LOG_DIRECTORY);
+                } catch (FileAlreadyExistsException ignored) {
+                }
             }
+            Path logFile =
+                LOG_DIRECTORY.resolve(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now()) + "-%g.log");
+            FileHandler handler = new FileHandler(logFile.toAbsolutePath().toString(), true);
+            handler.setFormatter(
+                Arrays.stream(LOGGER.getHandlers())
+                    .findFirst()
+                    .map(Handler::getFormatter)
+                    .orElseGet(SimpleFormatter::new)
+            );
+            LOGGER.addHandler(handler);
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "Couldn't register the FileHandler", exception);
         }
