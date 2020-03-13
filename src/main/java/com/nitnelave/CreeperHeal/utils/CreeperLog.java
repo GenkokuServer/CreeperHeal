@@ -48,12 +48,7 @@ public final class CreeperLog
             Path logFile =
                 LOG_DIRECTORY.resolve(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now()) + "-%g.log");
             FileHandler handler = new FileHandler(logFile.toAbsolutePath().toString(), true);
-            handler.setFormatter(
-                Arrays.stream(LOGGER.getHandlers())
-                    .findFirst()
-                    .map(Handler::getFormatter)
-                    .orElseGet(SimpleFormatter::new)
-            );
+            handler.setFormatter(new SimpleFormatter());
             LOGGER.addHandler(handler);
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "Couldn't register the FileHandler", exception);
