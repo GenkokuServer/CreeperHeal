@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * The main class of the CreeperHeal plugin. The main aim of this plugin is to
@@ -51,7 +52,7 @@ public class CreeperHeal extends JavaPlugin
             metrics.start();
         } catch (IOException e)
         {
-            CreeperLog.warning("Could not submit data to MC-Stats");
+            CreeperLog.LOGGER.log(Level.WARNING, "Could not submit data to MC-Stats", e);
         }
     }
 
@@ -62,7 +63,7 @@ public class CreeperHeal extends JavaPlugin
     {
         if (!griefRegistered)
         {
-            CreeperLog.debug("Registering Grief events");
+            CreeperLog.LOGGER.fine("Registering Grief events");
             Bukkit.getServer().getPluginManager().registerEvents(new GriefListener(), getInstance());
             griefRegistered = true;
         }
@@ -95,7 +96,7 @@ public class CreeperHeal extends JavaPlugin
      */
     private void registerEvents()
     {
-        CreeperLog.debug("Registering events");
+        CreeperLog.LOGGER.fine("Registering events");
         PluginManager pm = getServer().getPluginManager();
 
         pm.registerEvents(new CreeperListener(), this);
@@ -115,7 +116,7 @@ public class CreeperHeal extends JavaPlugin
 
         ExplodedBlockManager.init();
         BurntBlockManager.init();
-        CreeperLog.debug("Events registered");
+        CreeperLog.LOGGER.fine("Events registered");
     }
 
     /**

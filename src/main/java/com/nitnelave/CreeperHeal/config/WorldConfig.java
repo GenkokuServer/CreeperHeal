@@ -85,7 +85,7 @@ public class WorldConfig
                     protectList = new MaterialListValue(v, getFile(v));
                     break;
                 default:
-                    CreeperLog.warning("Unknown config value : " + v.toString());
+                    CreeperLog.LOGGER.warning("Unknown config value : " + v.toString());
                 }
     }
 
@@ -388,7 +388,7 @@ public class WorldConfig
             griefPlaceList.setValue(value);
             break;
         default:
-            CreeperLog.warning("Wrong key type : " + val.toString());
+            CreeperLog.LOGGER.warning("Wrong key type : " + val.toString());
         }
     }
 
@@ -432,7 +432,7 @@ public class WorldConfig
         Material material = Material.getMaterial(s);
         if (material == null)
         {
-            CreeperLog.warning("Invalid block type for " + key + " in world " + state.getWorld().getName());
+            CreeperLog.LOGGER.warning("Invalid block type for " + key + " in world " + state.getWorld().getName());
             return;
         }
         state.setType(material);

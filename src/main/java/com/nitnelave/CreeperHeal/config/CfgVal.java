@@ -12,7 +12,6 @@ public enum CfgVal implements CfgValEnumMember
     WAIT_BEFORE_HEAL_BURNT("wait-before-heal.fire", 45, false),
     CRACK_DESTROYED_BRICKS("crack-destroyed-bricks", false, false),
     REPLACE_PROTECTED_CHESTS("replace-protected-chests-immediately", false, false),
-    LOG_LEVEL("verbose-level", 1, true),
     TELEPORT_ON_SUFFOCATE("teleport-when-buried", true, true),
     DROP_DESTROYED_BLOCKS("drop-destroyed-blocks.enabled", true, true),
     DROP_CHANCE("drop-destroyed-blocks.chance", 100, true),

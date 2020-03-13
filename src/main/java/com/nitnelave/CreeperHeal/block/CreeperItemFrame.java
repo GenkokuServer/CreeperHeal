@@ -26,7 +26,7 @@ class CreeperItemFrame extends CreeperHanging
     CreeperItemFrame(ItemFrame frame)
     {
         super(frame);
-        CreeperLog.debug("Registered item frame");
+        CreeperLog.LOGGER.fine("Registered item frame");
     }
 
     /*

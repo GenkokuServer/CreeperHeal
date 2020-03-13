@@ -61,7 +61,7 @@ public abstract class CreeperMessenger
         }
         catch (IOException e)
         {
-            CreeperLog.warning("[CreeperHeal] Failed to read file: messages.properties");
+            CreeperLog.LOGGER.warning("Failed to read file: messages.properties");
             e.printStackTrace();
         }
     }
@@ -97,7 +97,7 @@ public abstract class CreeperMessenger
             message = colorToChat(message);
         } catch (NullPointerException e)
         {
-            CreeperLog.warning("Missing message property : " + type);
+            CreeperLog.LOGGER.warning("Missing message property : " + type);
         }
         try
         {
@@ -106,7 +106,7 @@ public abstract class CreeperMessenger
                     message = message.replaceAll("\\{" + variables[i] + "}", values[i]);
         } catch (NullPointerException e)
         {
-            CreeperLog.warning("[CreeperHeal] Wrong variable used in message " + type);
+            CreeperLog.LOGGER.warning("Wrong variable used in message " + type);
         }
         return message;
     }
@@ -186,7 +186,7 @@ public abstract class CreeperMessenger
         String message = CreeperMessenger.getMessage(cause, offender.getName(), offender.getWorld().getName(), blocked, material, false);
         SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss");
         if (CreeperConfig.getBool(CfgVal.LOG_WARNINGS))
-            CreeperLog.record("[" + f.format(new Date()) + "] " + ChatColor.stripColor(message));
+            CreeperLog.LOGGER.warning("[" + f.format(new Date()) + "] " + ChatColor.stripColor(message));
         message = ChatColor.RED + message;
         offender.sendMessage(CreeperMessenger.getMessage(cause, offender.getName(), offender.getWorld().getName(), blocked, material, true));
         for (CreeperPlayer cp : warnList)

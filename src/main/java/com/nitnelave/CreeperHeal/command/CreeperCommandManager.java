@@ -46,11 +46,11 @@ public class CreeperCommandManager implements CommandExecutor
             e.printStackTrace();
         }
 
-        String[] aliases = { "CreeperHeal", CreeperConfig.getAlias() };
+        String[] aliases = { CreeperConfig.getAlias() };
         CreeperCommand com = new CreeperCommand(aliases, "", "", new CreeperCommandManager());
 
         if (commandMap != null)
-            commandMap.register("_", com);
+            commandMap.register("creeperheal", com);
 
     }
 

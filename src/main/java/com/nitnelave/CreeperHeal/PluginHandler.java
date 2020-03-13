@@ -40,7 +40,7 @@ public class PluginHandler
     {
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin(name);
         if (plugin != null)
-            CreeperLog.logInfo("Successfully hooked into " + name, 1);
+            CreeperLog.LOGGER.info("Successfully hooked into " + name);
         return plugin;
     }
 

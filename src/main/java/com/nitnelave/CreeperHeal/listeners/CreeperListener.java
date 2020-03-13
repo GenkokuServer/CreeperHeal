@@ -49,7 +49,7 @@ public class CreeperListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event)
     {
-        CreeperLog.debug("Entity explode event");
+        CreeperLog.LOGGER.fine("Entity explode event");
         WorldConfig world = CreeperConfig.getWorld(event.getLocation().getWorld());
 
         if (!FactionHandler.shouldIgnore(event.blockList(), world))
@@ -72,7 +72,7 @@ public class CreeperListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent event)
     {
-        CreeperLog.debug("Block explode event: " + event.blockList().size());
+        CreeperLog.LOGGER.fine("Block explode event: " + event.blockList().size());
         WorldConfig world = CreeperConfig.getWorld(event.getBlock().getWorld());
 
         if (!FactionHandler.shouldIgnore(event.blockList(), world))
@@ -124,7 +124,7 @@ public class CreeperListener implements Listener
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event)
     {
-        CreeperLog.debug("Entity change block event");
+        CreeperLog.LOGGER.fine("Entity change block event");
         if (event.getEntityType() == EntityType.SILVERFISH
             && CreeperTag.INFESTED_BLOCKS.isTagged(event.getTo())
             && CreeperConfig.getBool(CfgVal.REPLACE_SILVERFISH_BLOCKS))
@@ -146,7 +146,7 @@ public class CreeperListener implements Listener
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamagedByEntity(EntityDamageByEntityEvent event)
     {
-        CreeperLog.debug("Entity damaged by entity event");
+        CreeperLog.LOGGER.fine("Entity damaged by entity event");
         WorldConfig world = CreeperConfig.getWorld(event.getEntity().getWorld());
         if (event.getEntityType() == EntityType.ARMOR_STAND
             && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION

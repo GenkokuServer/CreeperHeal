@@ -27,7 +27,7 @@ public class FileUtils
             file.createNewFile();
         } catch (IOException ex)
         {
-            CreeperLog.warning("[CreeperHeal] Cannot create file " + file.getPath());
+            CreeperLog.LOGGER.warning("[CreeperHeal] Cannot create file " + file.getPath());
             return false;
         }
         return true;
@@ -72,10 +72,10 @@ public class FileUtils
 
             out.flush();
             out.close();
-            CreeperLog.logInfo("[CreeperHeal] Defaults loaded for file " + file.getPath(), 1);
+            CreeperLog.LOGGER.info("[CreeperHeal] Defaults loaded for file " + file.getPath());
         } catch (IOException ex)
         {
-            CreeperLog.warning("Error copying file from jar : " + source);
+            CreeperLog.LOGGER.warning("Error copying file from jar : " + source);
             ex.printStackTrace();
         }
 
