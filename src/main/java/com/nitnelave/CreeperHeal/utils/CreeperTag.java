@@ -1,5 +1,6 @@
 package com.nitnelave.CreeperHeal.utils;
 
+import com.nitnelave.CreeperHeal.CreeperHeal;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
@@ -44,7 +45,7 @@ public class CreeperTag implements Tag<Material>
 
     private CreeperTag(String key, Material... elements)
     {
-        this.key = new NamespacedKey("creeperheal", key);
+        this.key = new NamespacedKey(CreeperHeal.getInstance(), key);
         tagged = CreeperUtils.createFinalHashSet(elements);
     }
 
