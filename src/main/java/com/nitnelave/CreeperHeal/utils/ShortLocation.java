@@ -12,7 +12,9 @@ import org.bukkit.block.Block;
  */
 public class ShortLocation
 {
-    private final int x, y, z, hashCode;
+    private final int x;
+    private final int y;
+    private final int z;
 
     /**
      * Constructor.
@@ -25,7 +27,6 @@ public class ShortLocation
         x = l.getBlockX();
         y = l.getBlockY();
         z = l.getBlockZ();
-        hashCode = 31 * x + 37 * y + 41 * z;
     }
 
     /**
@@ -47,7 +48,7 @@ public class ShortLocation
     @Override
     public int hashCode()
     {
-        return hashCode;
+        return 31 * x + 37 * y + 41 * z;
     }
 
     /*
