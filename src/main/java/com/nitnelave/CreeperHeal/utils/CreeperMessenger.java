@@ -3,8 +3,8 @@ package com.nitnelave.CreeperHeal.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -39,6 +39,8 @@ public final class CreeperMessenger
      * Variables to be replaced in the message.
      */
     private final static String[] variables = { "WORLD", "PLAYER", "TARGET", "MOB", "BLOCK" };
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     private static final List<CreeperPlayer> warnList = new LinkedList<>();
 
@@ -189,9 +191,8 @@ public final class CreeperMessenger
     public static void warn(WarningCause cause, Player offender, boolean blocked, String material)
     {
         String message = CreeperMessenger.getMessage(cause, offender.getName(), offender.getWorld().getName(), blocked, material, false);
-        SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss");
         if (CreeperConfig.getBool(CfgVal.LOG_WARNINGS))
-            CreeperLog.LOGGER.warning("[" + f.format(new Date()) + "] " + ChatColor.stripColor(message));
+            CreeperLog.LOGGER.warning("[" + FORMATTER.format(LocalTime.now()) + "] " + ChatColor.stripColor(message));
         message = ChatColor.RED + message;
         offender.sendMessage(CreeperMessenger.getMessage(cause, offender.getName(), offender.getWorld().getName(), blocked, material, true));
         for (CreeperPlayer cp : warnList)
