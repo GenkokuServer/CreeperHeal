@@ -1,17 +1,17 @@
 package com.nitnelave.CreeperHeal.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-
 import com.nitnelave.CreeperHeal.CreeperHeal;
 import com.nitnelave.CreeperHeal.config.CfgVal;
 import com.nitnelave.CreeperHeal.config.CreeperConfig;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.logging.*;
 
 /**
  * This class is used for all the outputting to the console and to players.
@@ -35,8 +35,14 @@ public final class CreeperLog
     {
         File folder = CreeperHeal.getCHFolder();
         try {
-            if (folder.exists())
-                LOGGER.addHandler(new FileHandler(folder + "/%u.log", true));
+            if (folder.exists()) {
+                FileHandler handler = new FileHandler(folder + "/logs/" +
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now())
+                    + "-%g.log", true);
+                handler.setFormatter(Arrays.stream(LOGGER.getHandlers()).findFirst()
+                    .map(Handler::getFormatter).orElseGet(SimpleFormatter::new));
+                LOGGER.addHandler(handler);
+            }
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "Couldn't register the FileHandler", exception);
         }
