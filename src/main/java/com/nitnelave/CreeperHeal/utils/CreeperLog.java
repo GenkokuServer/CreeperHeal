@@ -19,18 +19,13 @@ import com.nitnelave.CreeperHeal.config.CreeperConfig;
  * @author nitnelave
  *
  */
-public abstract class CreeperLog
+public final class CreeperLog
 {
     /*
      * Logger, for outputting to the console.
      */
     public final static Logger LOGGER = CreeperHeal.getInstance().getLogger();
 
-    /*
-     * The verbosity level. Initialized at -42 as an arbitrary value, to detect
-     * that it hasn't been loaded from the config yet.
-     */
-    private static int logLevel = -42;
     /*
      * Whether to output debug messages.
      */
@@ -39,7 +34,6 @@ public abstract class CreeperLog
     static
     {
         File folder = CreeperHeal.getCHFolder();
-        LOGGER.setParent(Logger.getLogger("Minecraft"));
         try {
             if (folder.mkdirs())
                 LOGGER.addHandler(new FileHandler(folder + "/%u.log", true));
@@ -48,26 +42,25 @@ public abstract class CreeperLog
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "Couldn't register the FileHandler", exception);
         }
-
         debug = CreeperConfig.getBool(CfgVal.DEBUG);
     }
 
     /**
-     * Display the type and the location of a block in a formatted way. If force
+     * Display the type and the location of a block in a formatted way. If warning
      * is true, then it is a warning (as part of a warning message). Otherwise
      * it is a debug message.
      *
      * @param block
      *            The block whose information is displayed.
-     * @param force
+     * @param warn
      *            Whether it is a warning or a debug message.
      */
-    public static void displayBlockLocation(Block block, boolean force)
+    public static void displayBlockLocation(Block block, boolean warn)
     {
         final Location location = block.getLocation();
         final String message = block.getType() + " at "
             + location.getBlockX() + "; " + location.getBlockY() + "; " + location.getBlockZ();
-        if (force)
+        if (warn)
             LOGGER.warning(message);
         else
             LOGGER.fine(message);
@@ -76,7 +69,11 @@ public abstract class CreeperLog
     public static void setDebug(boolean bool)
     {
         debug = bool;
-        LOGGER.info("[CreeperHeal] Debug mode: " + debug);
+        LOGGER.info("Debug mode: " + debug);
+    }
+
+    private CreeperLog()
+    {
     }
 
 }
