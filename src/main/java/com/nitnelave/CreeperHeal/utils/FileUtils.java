@@ -7,8 +7,12 @@ import java.io.*;
 /**
  * A class to handle common file operations.
  */
-public class FileUtils
+public final class FileUtils
 {
+
+    private FileUtils()
+    {
+    }
 
     /**
      * Creates a file, making parent directories if necessary.

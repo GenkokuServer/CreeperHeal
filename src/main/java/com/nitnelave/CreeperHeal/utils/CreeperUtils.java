@@ -20,8 +20,12 @@ import java.util.Set;
  * @author nitnelave
  * 
  */
-public abstract class CreeperUtils
+public final class CreeperUtils
 {
+
+    private CreeperUtils()
+    {
+    }
 
     public static CHExplosionRecordEvent.ExplosionReason getReason(Entity e)
     {

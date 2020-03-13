@@ -24,8 +24,13 @@ import com.nitnelave.CreeperHeal.utils.CreeperPlayer.WarningCause;
  * @author nitnelave
  * 
  */
-public abstract class CreeperMessenger
+public final class CreeperMessenger
 {
+
+    private CreeperMessenger()
+    {
+    }
+
     /*
      * The properties generated from reading the messages file.
      */

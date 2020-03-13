@@ -17,8 +17,12 @@ import com.nitnelave.CreeperHeal.config.WorldConfig;
  * @author nitnelave
  * 
  */
-public abstract class FactionHandler
+public final class FactionHandler
 {
+
+    private FactionHandler()
+    {
+    }
 
     private static boolean isFactionsEnabled = false;
 

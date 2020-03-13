@@ -24,8 +24,12 @@ import java.util.logging.Logger;
  * @author nitnelave
  * 
  */
-public abstract class CreeperConfig
+public final class CreeperConfig
 {
+
+    private CreeperConfig()
+    {
+    }
 
     private static final int CONFIG_VERSION = 12;
     private static final File CONFIG_FILE = new File(CreeperHeal.getCHFolder() + "/config.yml"),

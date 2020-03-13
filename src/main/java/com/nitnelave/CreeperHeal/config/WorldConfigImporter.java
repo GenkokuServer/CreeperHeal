@@ -10,8 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
-abstract class WorldConfigImporter
+final class WorldConfigImporter
 {
+
+    private WorldConfigImporter()
+    {
+    }
 
     private final static String[] STRING_BOOLEAN_OPTIONS = { "true", "false", "time" };
     private static boolean enderman, replaceAbove, blockLava, blockTNT, blockIgnite,

@@ -19,8 +19,12 @@ import com.nitnelave.CreeperHeal.utils.CreeperUtils;
  * @author nitnelave
  * 
  */
-public abstract class CreeperHandler
+public final class CreeperHandler
 {
+
+    private CreeperHandler()
+    {
+    }
 
     /**
      * Record all the blocks in the list as for an explosion.
