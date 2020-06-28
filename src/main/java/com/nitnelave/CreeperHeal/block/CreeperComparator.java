@@ -31,7 +31,7 @@ class CreeperComparator implements Comparator<Replaceable>
     }
 
     /**
-     * Constructor. The blocks are ordered as a last criterion by distance fron
+     * Constructor. The blocks are ordered as a last criterion by distance from
      * the explosion, the closest first.
      * 
      * @param loc

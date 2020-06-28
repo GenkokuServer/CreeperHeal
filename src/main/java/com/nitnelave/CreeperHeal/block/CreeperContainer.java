@@ -35,10 +35,18 @@ class CreeperContainer extends CreeperMultiblock
 
         DoubleChestInventory doubleChest = ((DoubleChestInventory) inv);
 
-        BlockState right = doubleChest.getRightSide().getLocation().getBlock().getState();
+        Location location = doubleChest.getRightSide().getLocation();
+        if (location == null)
+            return;
+
+        BlockState right = location.getBlock().getState();
+
+        location = doubleChest.getLeftSide().getLocation();
+        if (location == null)
+            return;
 
         // Left side is primary chest inventory
-        this.blockState = doubleChest.getLeftSide().getLocation().getBlock().getState();
+        this.blockState = location.getBlock().getState();
         this.dependents.add(right);
 
     }

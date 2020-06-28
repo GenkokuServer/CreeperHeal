@@ -32,7 +32,9 @@ public class CreeperShulkerBox extends CreeperBlock
             // Drop shulker with contents inside
             ItemStack itemStack = new ItemStack(blockState.getType());
             BlockStateMeta blockStateMeta = ((BlockStateMeta) Bukkit.getItemFactory().getItemMeta(Material.PURPLE_SHULKER_BOX));
-            blockStateMeta.setBlockState(blockState);
+            if (blockStateMeta != null) {
+                blockStateMeta.setBlockState(blockState);
+            }
             itemStack.setItemMeta(blockStateMeta);
             blockState.getWorld().dropItemNaturally(blockState.getLocation().add(0.5, 0.5, 0.5), itemStack);
             return true;

@@ -50,13 +50,11 @@ public class CreeperListener implements Listener
     public void onEntityExplode(EntityExplodeEvent event)
     {
         CreeperLog.LOGGER.fine("Entity explode event");
-        WorldConfig world = CreeperConfig.getWorld(event.getLocation().getWorld());
+        WorldConfig world = CreeperConfig.getWorld(event.getEntity().getWorld());
 
         if (!FactionHandler.shouldIgnore(event.blockList(), world))
         {
             Entity entity = event.getEntity();
-            if (entity == null && !world.isAbove(event.getLocation()))
-                return;
             if (world.shouldReplace(entity))
                 ExplodedBlockManager.processExplosion(event, CreeperUtils.getReason(entity));
         }
@@ -175,7 +173,7 @@ public class CreeperListener implements Listener
         }
     }
 
-    private class ReplaceSilverfishBlock implements Runnable
+    private static class ReplaceSilverfishBlock implements Runnable
     {
         private final Block block;
         private Material type;

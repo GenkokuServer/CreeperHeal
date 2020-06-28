@@ -18,13 +18,16 @@ import org.bukkit.block.Jukebox;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.FaceAttachable;
 import org.bukkit.block.data.Rail;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Piston;
 import org.bukkit.block.data.type.PistonHead;
+import org.bukkit.block.data.type.Sapling;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Attachable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,8 +55,8 @@ public class CreeperBlock implements Replaceable
      * These blocks (may) need a block under them not to drop.
      */
     private static final Set<Material> DEPENDENT_DOWN_BLOCKS =
-            CreeperUtils.createFinalHashSet(Material.BEETROOTS, Material.BROWN_MUSHROOM, Material.CACTUS,
-                    Material.CARROTS, Material.CHORUS_FLOWER, Material.CHORUS_PLANT, Material.COMPARATOR,
+            CreeperUtils.createFinalHashSet(Material.BROWN_MUSHROOM, Material.CACTUS,
+                    Material.CHORUS_FLOWER, Material.CHORUS_PLANT, Material.COMPARATOR,
                     Material.DEAD_BUSH, Material.FERN, Material.GRASS, Material.HEAVY_WEIGHTED_PRESSURE_PLATE,
                     Material.LARGE_FERN, Material.LIGHT_WEIGHTED_PRESSURE_PLATE, Material.LILY_PAD, Material.MELON_STEM,
                     Material.NETHER_WART, Material.NETHER_WART_BLOCK, Material.POTATOES, Material.PUMPKIN_STEM,
@@ -107,7 +110,7 @@ public class CreeperBlock implements Replaceable
 
         BlockData data = state.getBlockData();
 
-        if (data instanceof org.bukkit.block.data.type.Bed)
+        if (data instanceof Bed)
             return new CreeperBed(state);
         if (data instanceof Bisected && !(data instanceof Stairs) && !(data instanceof TrapDoor))
             return new CreeperBisected(state);
@@ -192,9 +195,11 @@ public class CreeperBlock implements Replaceable
     private static boolean isDependentDown(Material type)
     {
         if (Tag.SAPLINGS.isTagged(type) || Tag.RAILS.isTagged(type) || Tag.CARPETS.isTagged(type) || Tag.DOORS.isTagged(type)
-                || Tag.WOODEN_PRESSURE_PLATES.isTagged(type) || Tag.FLOWER_POTS.isTagged(type)
-                || CreeperTag.STANDING_BANNERS.isTagged(type) || CreeperTag.FLOWERS.isTagged(type)
-                || CreeperTag.DOUBLE_FLOWERS.isTagged(type)) {
+                || Tag.WOODEN_PRESSURE_PLATES.isTagged(type)
+                || CreeperTag.STANDING_BANNERS.isTagged(type) || Tag.FLOWERS.isTagged(type)
+                || CreeperTag.DOUBLE_FLOWERS.isTagged(type) || Tag.STANDING_SIGNS.isTagged(type)
+                || (Tag.CORAL_PLANTS.isTagged(type) && !Tag.WALL_CORALS.isTagged(type))
+                || Tag.STANDING_SIGNS.isTagged(type) || Tag.CROPS.isTagged(type)) {
             return true;
         }
         return DEPENDENT_DOWN_BLOCKS.contains(type);
@@ -223,6 +228,7 @@ public class CreeperBlock implements Replaceable
     public static boolean isDependent(Material type)
     {
         return DEPENDENT_BLOCKS.contains(type) || Tag.BUTTONS.isTagged(type) || CreeperTag.WALL_BANNERS.isTagged(type)
+                || Tag.WALL_SIGNS.isTagged(type) || Tag.BANNERS.isTagged(type)
                 || isDependentDown(type);
     }
 
@@ -286,9 +292,14 @@ public class CreeperBlock implements Replaceable
         if (checkForDrop())
             return true;
 
-        if (!shouldDrop && isDependent(getType())
-                && isEmpty(getBlock().getRelative(getAttachingFace()).getType()))
-            return false;
+        if (!shouldDrop && isDependent(getType()))
+        {
+            BlockFace attachingFace = getAttachingFace();
+            if (attachingFace != BlockFace.SELF && isEmpty(getBlock().getRelative(attachingFace).getType()))
+            {
+                return false;
+            }
+        }
 
         update();
         checkForAscendingRails();
@@ -362,12 +373,39 @@ public class CreeperBlock implements Replaceable
     @Override
     public BlockFace getAttachingFace()
     {
-        if (blockState.getData() instanceof Attachable)
-        {
-            return ((Attachable) blockState.getData()).getAttachedFace();
-        }
         if (isDependentDown(blockState.getType()))
+        {
             return BlockFace.DOWN;
+        }
+
+        BlockData blockData = blockState.getBlockData();
+
+        // Levers
+        if (blockData instanceof FaceAttachable) {
+            switch (((FaceAttachable) blockData).getAttachedFace()) {
+            case FLOOR:
+                return BlockFace.DOWN;
+            case CEILING:
+                return BlockFace.UP;
+            case WALL:
+            default:
+                // Fall through to Directional
+                break;
+            }
+        }
+
+        // Banners, signs, levers, etc.
+        if (blockData instanceof Directional)
+        {
+            return ((Directional) blockData).getFacing().getOppositeFace();
+        }
+
+        // Bamboo, saplings
+        if (blockData instanceof Sapling)
+        {
+            return BlockFace.DOWN;
+        }
+
         return BlockFace.SELF;
     }
 

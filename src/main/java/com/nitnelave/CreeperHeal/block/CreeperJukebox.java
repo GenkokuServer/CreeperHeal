@@ -66,7 +66,7 @@ public class CreeperJukebox extends CreeperBlock
             super.update();
     }
 
-    private class RecordDropListener implements Listener {
+    private static class RecordDropListener implements Listener {
 
         private final Material record;
 

@@ -9,9 +9,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents an ArmorStand
@@ -19,20 +21,23 @@ import java.util.Arrays;
 public class CreeperArmorStand implements Replaceable
 {
     private final ArmorStand stand;
-    private final ItemStack mainHand, offHand;
-    private final ItemStack[] contents;
+    private final Map<EquipmentSlot, ItemStack> equipment = new HashMap<>();
     private boolean wasRemoved = false;
 
     CreeperArmorStand(ArmorStand stand)
     {
         this.stand = stand;
         EntityEquipment equipment = stand.getEquipment();
-        this.mainHand = equipment.getItemInMainHand();
-        this.offHand = equipment.getItemInOffHand();
-
-        this.contents = new ItemStack[equipment.getArmorContents().length];
-        System.arraycopy(equipment.getArmorContents(), 0, contents, 0, contents.length);
-        CreeperLog.LOGGER.fine("Armor: " + Arrays.toString(contents));
+        if (equipment != null)
+        {
+            for (EquipmentSlot slot : EquipmentSlot.values())
+            {
+                ItemStack itemStack = equipment.getItem(slot);
+                if (!itemStack.getType().isAir()) {
+                    this.equipment.put(slot, itemStack);
+                }
+            }
+        }
         remove();
     }
 
@@ -57,9 +62,13 @@ public class CreeperArmorStand implements Replaceable
         s.setVisible(stand.isVisible());
 
         EntityEquipment equipment = s.getEquipment();
-        equipment.setArmorContents(contents);
-        equipment.setItemInMainHand(this.mainHand);
-        equipment.setItemInOffHand(this.offHand);
+        if (equipment != null)
+        {
+            for (Map.Entry<EquipmentSlot, ItemStack> equipmentEntry : this.equipment.entrySet())
+            {
+                equipment.setItem(equipmentEntry.getKey(), equipmentEntry.getValue());
+            }
+        }
 
         s.teleport(stand.getLocation());
         return true;
@@ -107,7 +116,7 @@ public class CreeperArmorStand implements Replaceable
         if (forced || CreeperConfig.shouldDrop())
         {
             getWorld().dropItemNaturally(getLocation(), new ItemStack(Material.ARMOR_STAND, 1));
-            for (ItemStack itemStack : contents)
+            for (ItemStack itemStack : equipment.values())
                 if (itemStack != null && itemStack.getType() != Material.AIR)
                     getWorld().dropItemNaturally(getLocation(), itemStack);
             return true;
@@ -121,8 +130,10 @@ public class CreeperArmorStand implements Replaceable
         if (!wasRemoved)
         {
             wasRemoved = true;
-            stand.getEquipment().clear();
-            CreeperLog.LOGGER.fine("Removing armor, chestplate = " + stand.getEquipment().getChestplate().getType());
+            EntityEquipment equipment = stand.getEquipment();
+            if (equipment != null)
+                equipment.clear();
+            CreeperLog.LOGGER.fine("Removing armor, chestplate = " + stand.getEquipment().getItem(EquipmentSlot.CHEST).getType());
             stand.remove();
         }
     }

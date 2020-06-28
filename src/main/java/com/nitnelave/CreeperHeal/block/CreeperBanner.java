@@ -33,7 +33,8 @@ public class CreeperBanner extends CreeperBlock
         {
             ItemStack itemStack = new ItemStack(blockState.getType());
             BannerMeta bannerMeta = ((BannerMeta) Bukkit.getItemFactory().getItemMeta(blockState.getType()));
-            bannerMeta.setPatterns(((Banner) blockState).getPatterns());
+            if (bannerMeta != null)
+                bannerMeta.setPatterns(((Banner) blockState).getPatterns());
             itemStack.setItemMeta(bannerMeta);
             blockState.getWorld().dropItemNaturally(blockState.getLocation().add(0.5, 0.5, 0.5), itemStack);
             return true;

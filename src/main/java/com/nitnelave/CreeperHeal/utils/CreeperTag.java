@@ -15,11 +15,6 @@ import java.util.Set;
 public class CreeperTag implements Tag<Material>
 {
 
-    public static final CreeperTag FLOWERS =
-            new CreeperTag("flowers", Material.DANDELION, Material.POPPY, Material.BLUE_ORCHID, Material.ALLIUM,
-                    Material.AZURE_BLUET, Material.RED_TULIP, Material.ORANGE_TULIP, Material.WHITE_TULIP,
-                    Material.PINK_TULIP, Material.OXEYE_DAISY);
-
     public static final CreeperTag INFESTED_BLOCKS =
             new CreeperTag("infested_blocks", Material.INFESTED_CHISELED_STONE_BRICKS, Material.INFESTED_COBBLESTONE,
                     Material.INFESTED_CRACKED_STONE_BRICKS, Material.INFESTED_MOSSY_STONE_BRICKS,

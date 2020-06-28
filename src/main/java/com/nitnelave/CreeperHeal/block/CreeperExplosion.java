@@ -14,11 +14,11 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -49,7 +49,7 @@ public class CreeperExplosion
      */
     public CreeperExplosion(Location loc)
     {
-        world = CreeperConfig.getWorld(loc.getWorld());
+        world = CreeperConfig.getWorld(Objects.requireNonNull(loc.getWorld()));
         timer = new ReplacementTimer(new Date(new Date().getTime() + 1000
                 * CreeperConfig.getInt(CfgVal.WAIT_BEFORE_HEAL)), world.isRepairTimed());
         blockList = new LinkedList<>();
@@ -78,7 +78,7 @@ public class CreeperExplosion
         if (CreeperConfig.getBool(CfgVal.EXPLODE_OBSIDIAN))
             checkForObsidian();
 
-        Collections.sort(blockList, new CreeperComparator(loc));
+        blockList.sort(new CreeperComparator(loc));
         radius = computeRadius();
     }
 
@@ -223,7 +223,7 @@ public class CreeperExplosion
     {
         int radius = CreeperConfig.getInt(CfgVal.OBSIDIAN_RADIUS);
         double chance = ((float) CreeperConfig.getInt(CfgVal.OBSIDIAN_CHANCE)) / 100;
-        World w = loc.getWorld();
+        World w = world.getWorld();
 
         boolean table = CreeperConfig.getBool(CfgVal.OBSIDIAN_TABLE);
 

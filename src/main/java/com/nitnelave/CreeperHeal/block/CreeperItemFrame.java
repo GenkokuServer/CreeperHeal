@@ -53,11 +53,14 @@ class CreeperItemFrame extends CreeperHanging
     {
         try
         {
-            ItemFrame f = getWorld().spawn(location, ItemFrame.class);
-            f.teleport(location);
-            f.setItem(((ItemFrame) hanging).getItem());
-            f.setRotation(((ItemFrame) hanging).getRotation());
-            f.setFacingDirection(hanging.getFacing(), true);
+            ItemFrame frame = getWorld().spawn(location, ItemFrame.class);
+            frame.teleport(location);
+            ItemFrame oldFrame = (ItemFrame) this.hanging;
+            frame.setItem(oldFrame.getItem());
+            frame.setRotation(oldFrame.getRotation());
+            frame.setFacingDirection(oldFrame.getFacing(), true);
+            frame.setFixed(oldFrame.isFixed());
+            frame.setVisible(oldFrame.isVisible());
         } catch (IllegalArgumentException e) // Could not place the item frame
         {
             return false;
