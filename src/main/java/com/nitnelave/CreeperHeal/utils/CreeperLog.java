@@ -53,7 +53,7 @@ public final class CreeperLog
         } catch (IOException exception) {
             LOGGER.log(Level.SEVERE, "Couldn't register the FileHandler", exception);
         }
-        debug = CreeperConfig.getBool(CfgVal.DEBUG);
+        setDebug(CreeperConfig.getBool(CfgVal.DEBUG));
     }
 
     /**
@@ -80,6 +80,7 @@ public final class CreeperLog
     public static void setDebug(boolean bool)
     {
         debug = bool;
+        LOGGER.setLevel(debug ? Level.ALL : Level.INFO);
         LOGGER.info("Debug mode: " + debug);
     }
 
